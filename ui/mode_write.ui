@@ -10,6 +10,11 @@
     <height>200</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>阿里巴巴普惠体 2.0 65 Medium</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>模板设置</string>
   </property>
@@ -22,6 +27,11 @@
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QLabel" name="label">
+           <property name="font">
+            <font>
+             <family>阿里巴巴普惠体 2.0 65 Medium</family>
+            </font>
+           </property>
            <property name="text">
             <string>三星</string>
            </property>
@@ -29,6 +39,11 @@
          </item>
          <item>
           <widget class="QLabel" name="label_2">
+           <property name="font">
+            <font>
+             <family>阿里巴巴普惠体 2.0 65 Medium</family>
+            </font>
+           </property>
            <property name="text">
             <string>四星</string>
            </property>
@@ -36,6 +51,11 @@
          </item>
          <item>
           <widget class="QLabel" name="label_3">
+           <property name="font">
+            <font>
+             <family>阿里巴巴普惠体 2.0 65 Medium</family>
+            </font>
+           </property>
            <property name="text">
             <string>五星</string>
            </property>
@@ -46,13 +66,31 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QTextEdit" name="three"/>
+          <widget class="QTextEdit" name="three">
+           <property name="font">
+            <font>
+             <family>阿里巴巴普惠体 2.0 65 Medium</family>
+            </font>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QTextEdit" name="four"/>
+          <widget class="QTextEdit" name="four">
+           <property name="font">
+            <font>
+             <family>阿里巴巴普惠体 2.0 65 Medium</family>
+            </font>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="QTextEdit" name="five"/>
+          <widget class="QTextEdit" name="five">
+           <property name="font">
+            <font>
+             <family>阿里巴巴普惠体 2.0 65 Medium</family>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -67,6 +105,11 @@
        <width>0</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>阿里巴巴普惠体 2.0 65 Medium</family>
+      </font>
      </property>
      <property name="text">
       <string>保存并退出</string>

@@ -22,12 +22,13 @@ from logging import info
 
 import XiaoMing
 from PySide6 import QtWidgets
-from PySide6.QtCore import QFile
+from PySide6.QtCore import Qt,QFile
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtWidgets import QApplication, QMessageBox
+from PySide6.QtGui import QGuiApplication, QIcon, QPalette, QColor, QFont
 
 # 确定共同路径,由于vscode中使用绝对路径,为保证程序不会因路径更改而导致报错
-path_Num = sys.argv[0].rfind("\\")
+path_Num = sys.argv[0].rfind("/")
 PaTh = sys.argv[0]
 Same_Path = PaTh[0:path_Num]
 
@@ -48,6 +49,7 @@ main_win8 = None
 main_win9 = None
 main_win10 = None
 main_win11 = None
+main_win12 = None
 
 # logging日志模块配置
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
@@ -68,7 +70,6 @@ class Start():# 主菜单类
         self.ui.mode.clicked.connect(self.MoDe)
         self.ui.Start_only.clicked.connect(self.LottERy)
         self.ui.Start_batch.clicked.connect(self.SomeLottERy)
-        self.ui.Exit.clicked.connect(self.Exit)
     def FindDaTa(self):# 用于加载并显示抽卡数据
         # 寻找在Today文件夹下面有没有今天的文件，来判断是不是今天第一次登陆
         toDaY_File = f'{XiaoMing.str_today()}.json'
@@ -78,14 +79,14 @@ class Start():# 主菜单类
             pass
         else:
             # 创建一个新文件,并写入基本数据防止报错,另外,检测还有没有别的文件,并把别的文件移入History文件夹
-            with open(f'{Same_Path}/Data/Today/{toDaY_File}',mode="w+") as TodayFile:
+            with open(f'{Same_Path}/Data/Today/{toDaY_File}',mode="w+",encoding="utf-8") as TodayFile:
                 TodayFile.write('{"ThreeStar":[],"FourStar":[],"FiveStar":[]}')
             # 检测别的文件
             if Today_listpath:
                 # 获取文件名
                 YesterdayFileName = Today_listpath[0]
                 # 读取文件
-                with open(f'{Same_Path}/Data/Today/{YesterdayFileName}',mode="r") as YesterdayFile:
+                with open(f'{Same_Path}/Data/Today/{YesterdayFileName}',mode="r",encoding="utf-8") as YesterdayFile:
                     YesterdayFileContent = json.load(YesterdayFile)
                 # 将之前的内容添加至History.json文件中(读写不能同时进行,先读后写)
                 # 读 
@@ -204,8 +205,6 @@ class Start():# 主菜单类
         main_win10.ui.show()
         # 关闭自己
         self.ui.close()
-    def Exit(self):# 退出
-        exit()
 class About():# 关于类
     def __init__(self):# 关于窗口
         super().__init__()
@@ -248,7 +247,7 @@ class Mode():# 定义模式
             info("选中无用项")
         else:
             # 打开文件读取数据
-            with open(f'{Same_Path}/Data/Mode/{mode_text}.json',mode="r") as Mode_File:
+            with open(f'{Same_Path}/Data/Mode/{mode_text}.json',mode="r",encoding="utf-8") as Mode_File:
                 global ModeData
                 ModeData = json.load(Mode_File)
             # 读取数据
@@ -275,7 +274,7 @@ class Mode():# 定义模式
         if mode_text == "none":# 检测选中对象是不是无用项
             info("无用项,无法设置")
         else:
-            with open(f'{Same_Path}/Data/Mode/NowMode',mode="w") as NowModeFile:
+            with open(f'{Same_Path}/Data/Mode/NowMode',mode="w",encoding="utf-8") as NowModeFile:
                 NowModeFile.write(mode_text)
             info(f"成功将{mode_text}设为默认")
         global main_win4
@@ -334,7 +333,7 @@ class ModeWrite():# 用来修改模式文件
         # 保存
         save = {"ThreeStar":self.ui.three.toPlainText().splitlines(),"FourStar":self.ui.four.toPlainText().splitlines(),"FiveStar":self.ui.five.toPlainText().splitlines()}
         # 打开文件写数据
-        with open(f'{Same_Path}/Data/Mode/{ModeNumber}.json',mode="w") as Mode_File:
+        with open(f'{Same_Path}/Data/Mode/{ModeNumber}.json',mode="w",encoding="utf-8") as Mode_File:
             json.dump(save,Mode_File)
         info(f"保存内容:{save}")
         # 切换窗口
@@ -364,10 +363,10 @@ class Lottery():# 抽个奖奖
     def StArt(self):# 开始抽奖
         # 检测模式中是否存在空的项目
         # 获得模式
-        with open(f'{Same_Path}/Data/Mode/NowMode',mode="r") as Mode_File:
+        with open(f'{Same_Path}/Data/Mode/NowMode',mode="r",encoding="utf-8") as Mode_File:
             mode = Mode_File.read()
         # 读取文件
-        with open(f'{Same_Path}/Data/Mode/{mode}.json',mode="r") as Mode_File:
+        with open(f'{Same_Path}/Data/Mode/{mode}.json',mode="r",encoding="utf-8") as Mode_File:
             RoleDict = json.load(Mode_File)
         # 写进变量
         ThreeStar = RoleDict['ThreeStar']
@@ -402,8 +401,8 @@ class Lottery():# 抽个奖奖
             当前总抽卡数 = len(self.NowThreeStars)+len(self.NowFourStars)+len(self.NowFiveStars)
             self.ui.Text.append(f"总次数:{当前总抽卡数}")
             self.ui.Text.append(f"三星数量:{len(self.NowThreeStars)}")
-            self.ui.Text.append(f"四星数量:{len(self.NowFourStars)}")
-            self.ui.Text.append(f"五星数量:{len(self.NowFiveStars)}")
+            self.ui.Text.append(f"四星数量:{len(self.NowFourStars)}({self.Fourno}抽未出)")
+            self.ui.Text.append(f"五星数量:{len(self.NowFiveStars)}({self.Fiveno}抽未出)")
             self.ui.Text.append(f"三星出率:{round(((len(self.NowThreeStars)/当前总抽卡数)*100),2)}%")
             self.ui.Text.append(f"四星出率:{round(((len(self.NowFourStars)/当前总抽卡数)*100),2)}%")
             self.ui.Text.append(f"五星出率:{round(((len(self.NowFiveStars)/当前总抽卡数)*100),2)}%")
@@ -493,7 +492,7 @@ class Lottery():# 抽个奖奖
                 fiveno = 0
                 return (returnfive,FourNO,fiveno)
     def SaVe_Exit(self):# 退出和保存
-        with open(f'{Same_Path}/Data/Today/{XiaoMing.str_today()}.json',mode="w") as Today_File:
+        with open(f'{Same_Path}/Data/Today/{XiaoMing.str_today()}.json',mode="w",encoding="utf-8") as Today_File:
             global TodayDict
             info(f"{TodayDict}")
             # read
@@ -537,72 +536,98 @@ class SomeLottery():# 抽一些奖
         self.ui.Start.clicked.connect(self.StArt)# 开始
         self.ui.Exit.clicked.connect(self.SaVe_Exit)# 退出
     def StArt(self):
-        # 检测输入数据是否大于1000
-        number = int(self.ui.Edit.text())
-        if number > 1000:
-            info("尝试输入非法内容")
+        # 检测输入数据是否大于1000,以及是否输入的是数字
+        if self.ui.Edit.text() == "":
+            info("未输入数字")
             # 弹出错误提示
-            QMessageBox.critical(self.ui,'Error','就你不听劝?')
-        else:
-            # 设置进度条
-            self.ui.progressBar.setRange(0,number)
-            info(f"number = {number}")
-            # 导入在Lottery中的函数
-            lottery = Lottery()
-            # 检测模式中是否存在空的项目
-            # 获得模式
-            with open(f'{Same_Path}/Data/Mode/NowMode',mode="r") as Mode_File:
-                mode = Mode_File.read()
-            # 读取文件
-            with open(f'{Same_Path}/Data/Mode/{mode}.json',mode="r") as Mode_File:
-                RoleDict = json.load(Mode_File)
-            # 写进变量
-            ThreeStar = RoleDict['ThreeStar']
-            FourStar = RoleDict["FourStar"]
-            FiveStar = RoleDict["FiveStar"]
-            # 判断是否为空
-            if ThreeStar and FourStar and FiveStar:
-                for i in range(number):
-                    info("准备执行抽奖")
-                    Package = lottery.LotteryFunction((ThreeStar,FourStar,FiveStar),self.Fourno,self.Fiveno)
-                    info(f"Package = {Package}")
-                    self.Fiveno = Package[2]
-                    self.Fourno = Package[1]
-                    # 清除屏幕数据
-                    self.ui.Text.clear()
-                    # 判断四五星未出次数是否为0,如果是,那么就是这抽的角色是四五星
-                    if not self.Fiveno:
-                        self.NowFiveStars.append(Package[0])
-                        # 显示当前是五星
-                        self.ui.Text.append(f"当前抽出五星:{Package[0]}")
-                    elif not self.Fourno:
-                        self.NowFourStars.append(Package[0])
-                        # 显示当前是四星
-                        self.ui.Text.append(f"当前抽出四星:{Package[0]}")
-                    else:
-                        self.NowThreeStars.append(Package[0])
-                        # 显示当前是三星
-                        self.ui.Text.append(f"当前抽出三星:{Package[0]}")
-                    info(f"三星:{self.NowThreeStars}")
-                    info(f"四星:{self.NowFourStars}")
-                    info(f"五星:{self.NowFiveStars}")
-                    # 打印数据
-                    当前总抽卡数 = len(self.NowThreeStars)+len(self.NowFourStars)+len(self.NowFiveStars)
-                    self.ui.Text.append(f"总次数:{当前总抽卡数}")
-                    self.ui.Text.append(f"三星数量:{len(self.NowThreeStars)}")
-                    self.ui.Text.append(f"四星数量:{len(self.NowFourStars)}")
-                    self.ui.Text.append(f"五星数量:{len(self.NowFiveStars)}")
-                    self.ui.Text.append(f"三星出率:{round(((len(self.NowThreeStars)/当前总抽卡数)*100),2)}%")
-                    self.ui.Text.append(f"四星出率:{round(((len(self.NowFourStars)/当前总抽卡数)*100),2)}%")
-                    self.ui.Text.append(f"五星出率:{round(((len(self.NowFiveStars)/当前总抽卡数)*100),2)}%")
-                    # 设置进度条
-                    self.ui.progressBar.setValue(i+1)
-            else:
-                info("正在尝试使用空项目!")
+            QMessageBox.critical(self.ui,'Error','请输入数据')  
+        else:          
+            number = int(self.ui.Edit.text())
+            if number > 1000:
+                info("尝试输入非法内容")
                 # 弹出错误提示
-                QMessageBox.critical(self.ui,'Error','nm戈壁,你知道修bug要多久吗,nnd')
+                QMessageBox.critical(self.ui,'Error','就你不听劝?')
+            else:
+                # 设置进度条
+                self.ui.progressBar.setRange(0,number)
+                info(f"number = {number}")
+                # 导入在Lottery中的函数
+                lottery = Lottery()
+                # 检测模式中是否存在空的项目
+                # 获得模式
+                with open(f'{Same_Path}/Data/Mode/NowMode',mode="r",encoding="utf-8") as Mode_File:
+                    mode = Mode_File.read()
+                # 读取文件
+                with open(f'{Same_Path}/Data/Mode/{mode}.json',mode="r",encoding="utf-8") as Mode_File:
+                    RoleDict = json.load(Mode_File)
+                # 写进变量
+                ThreeStar = RoleDict['ThreeStar']
+                FourStar = RoleDict["FourStar"]
+                FiveStar = RoleDict["FiveStar"]
+                # 判断是否为空
+                if ThreeStar and FourStar and FiveStar:
+                    # 定义变量,用于记录本次所有抽卡结果
+                    AllNowLottery = []
+                    for i in range(number):
+                        info("准备执行抽奖")
+                        Package = lottery.LotteryFunction((ThreeStar,FourStar,FiveStar),self.Fourno,self.Fiveno)
+                        info(f"Package = {Package}")
+                        self.Fiveno = Package[2]
+                        self.Fourno = Package[1]
+                        # 清除屏幕数据
+                        self.ui.Text.clear()
+                        # 判断四五星未出次数是否为0,如果是,那么就是这抽的角色是四五星
+                        if not self.Fiveno:
+                            self.NowFiveStars.append(Package[0])
+                            AllNowLottery.append([Package[0],5])
+                            # 显示当前是五星
+                            self.ui.Text.append(f"当前抽出五星:{Package[0]}")
+                        elif not self.Fourno:
+                            self.NowFourStars.append(Package[0])
+                            AllNowLottery.append([Package[0],4])
+                            # 显示当前是四星
+                            self.ui.Text.append(f"当前抽出四星:{Package[0]}")
+                        else:
+                            self.NowThreeStars.append(Package[0])
+                            AllNowLottery.append([Package[0],3])
+                            # 显示当前是三星
+                            self.ui.Text.append(f"当前抽出三星:{Package[0]}")
+                        #info(f"三星:{self.NowThreeStars}")
+                        #info(f"四星:{self.NowFourStars}")
+                        #info(f"五星:{self.NowFiveStars}")
+                        # 打印数据
+                        当前总抽卡数 = len(self.NowThreeStars)+len(self.NowFourStars)+len(self.NowFiveStars)
+                        self.ui.Text.append(f"总次数:{当前总抽卡数}")
+                        self.ui.Text.append(f"三星数量:{len(self.NowThreeStars)}")
+                        self.ui.Text.append(f"四星数量:{len(self.NowFourStars)}({self.Fourno}抽未出)")
+                        self.ui.Text.append(f"五星数量:{len(self.NowFiveStars)}({self.Fiveno}抽未出)")
+                        self.ui.Text.append(f"三星出率:{round(((len(self.NowThreeStars)/当前总抽卡数)*100),2)}%")
+                        self.ui.Text.append(f"四星出率:{round(((len(self.NowFourStars)/当前总抽卡数)*100),2)}%")
+                        self.ui.Text.append(f"五星出率:{round(((len(self.NowFiveStars)/当前总抽卡数)*100),2)}%")
+                        # 设置进度条
+                        self.ui.progressBar.setValue(i+1)
+                    # 显示结果
+                    global main_win12
+                    main_win12 = SomeLotteryShow()
+                    main_win12.ui.show()
+                    info(f"模拟抽卡结果:{AllNowLottery}")
+                    for OneLottery in AllNowLottery:
+                        # 修改输出文本
+                        OutputString = OneLottery[0]
+                        match OneLottery[1]:
+                            case 3:
+                                main_win12.ui.Text.setTextColor(QColor(20,55,252))
+                            case 4:
+                                main_win12.ui.Text.setTextColor(QColor(200,2,255))
+                            case 5:
+                                main_win12.ui.Text.setTextColor(QColor(248,222,0))
+                        main_win12.ui.Text.append(OutputString)
+                else:
+                    info("正在尝试使用空项目!")
+                    # 弹出错误提示
+                    QMessageBox.critical(self.ui,'Error','nm戈壁,你知道修bug要多久吗,nnd')
     def SaVe_Exit(self):# 退出和保存
-        with open(f'{Same_Path}/Data/Today/{XiaoMing.str_today()}.json',mode="w") as Today_File:
+        with open(f'{Same_Path}/Data/Today/{XiaoMing.str_today()}.json',mode="w",encoding="utf-8") as Today_File:
             global TodayDict
             info(f"{TodayDict}")
             # read
@@ -625,9 +650,24 @@ class SomeLottery():# 抽一些奖
         main_win9.ui.show()
         # 关闭自己
         self.ui.close()
+
+class SomeLotteryShow():# 一个小窗口 用于显示批量抽卡结束后抽卡记录
+    def __init__(self):# 此窗体
+        super().__init__()
+        window=QFile(f'{Same_Path}/ui/somelottery_show.ui')
+        window.open(QFile.ReadOnly)
+        window.close
+        self.ui=QUiLoader().load(window)
+        # 检测是否按下确定
+        self.ui.Exit.clicked.connect(self.Exit)# 退出
+    def Exit(self):
+        # 关闭自己
+        self.ui.close()
+
 # 显示窗口        
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
+    app.setWindowIcon(QIcon(f"{Same_Path}/原神抽卡模拟图标.ico"))
     window = Start()
     window.ui.show()
     sys.exit(app.exec())

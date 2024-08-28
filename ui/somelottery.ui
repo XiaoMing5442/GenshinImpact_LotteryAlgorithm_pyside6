@@ -7,8 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>603</width>
-    <height>191</height>
+    <height>193</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>阿里巴巴普惠体 2.0 65 Medium</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>抽奖,但一些</string>
@@ -17,7 +22,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QTextBrowser" name="Text"/>
+      <widget class="QTextBrowser" name="Text">
+       <property name="font">
+        <font>
+         <family>阿里巴巴普惠体 2.0 65 Medium</family>
+        </font>
+       </property>
+      </widget>
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -35,13 +46,24 @@
            <height>32</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>阿里巴巴普惠体 2.0 65 Medium</family>
+          </font>
+         </property>
          <property name="text">
           <string>抽奖次数(不能大于1000)</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="Edit"/>
+        <widget class="QLineEdit" name="Edit">
+         <property name="font">
+          <font>
+           <family>阿里巴巴普惠体 2.0 65 Medium</family>
+          </font>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QPushButton" name="Start">
@@ -50,6 +72,11 @@
            <width>241</width>
            <height>31</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>阿里巴巴普惠体 2.0 65 Medium</family>
+          </font>
          </property>
          <property name="text">
           <string>开始</string>
@@ -64,6 +91,11 @@
            <height>31</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>阿里巴巴普惠体 2.0 65 Medium</family>
+          </font>
+         </property>
          <property name="text">
           <string>保存并退出</string>
          </property>
@@ -76,6 +108,11 @@
            <width>351</width>
            <height>31</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>阿里巴巴普惠体 2.0 65 Medium</family>
+          </font>
          </property>
          <property name="value">
           <number>24</number>

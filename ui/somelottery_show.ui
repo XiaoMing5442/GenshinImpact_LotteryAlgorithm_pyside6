@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>437</width>
-    <height>260</height>
+    <width>436</width>
+    <height>707</height>
    </rect>
   </property>
   <property name="font">
    <font>
     <family>阿里巴巴普惠体 2.0 65 Medium</family>
+    <italic>false</italic>
    </font>
   </property>
   <property name="windowTitle">
-   <string>抽奖</string>
+   <string>批量抽卡结果显示</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QTextBrowser" name="Text"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="start">
+      <widget class="QTextBrowser" name="Text">
        <property name="font">
         <font>
          <family>阿里巴巴普惠体 2.0 65 Medium</family>
+         <italic>false</italic>
         </font>
-       </property>
-       <property name="text">
-        <string>抽一个</string>
        </property>
       </widget>
      </item>
@@ -41,10 +40,11 @@
        <property name="font">
         <font>
          <family>阿里巴巴普惠体 2.0 65 Medium</family>
+         <italic>false</italic>
         </font>
        </property>
        <property name="text">
-        <string>保存并退出</string>
+        <string>确定</string>
        </property>
       </widget>
      </item>

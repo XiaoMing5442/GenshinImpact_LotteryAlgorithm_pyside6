@@ -10,6 +10,11 @@
     <height>154</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>阿里巴巴普惠体 2.0 65 Medium</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>模板设置</string>
   </property>
@@ -22,6 +27,11 @@
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QLabel" name="label">
+           <property name="font">
+            <font>
+             <family>阿里巴巴普惠体 2.0 65 Medium</family>
+            </font>
+           </property>
            <property name="text">
             <string>三星</string>
            </property>
@@ -67,6 +77,11 @@
            <width>0</width>
            <height>40</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>阿里巴巴普惠体 2.0 65 Medium</family>
+          </font>
          </property>
          <item>
           <property name="text">
@@ -183,6 +198,11 @@
            <height>40</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <family>阿里巴巴普惠体 2.0 65 Medium</family>
+          </font>
+         </property>
          <property name="text">
           <string>修改选中项</string>
          </property>
@@ -195,6 +215,11 @@
            <width>0</width>
            <height>40</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>阿里巴巴普惠体 2.0 65 Medium</family>
+          </font>
          </property>
          <property name="text">
           <string>保存并返回</string>
